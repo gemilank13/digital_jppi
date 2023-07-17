@@ -1,0 +1,10 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_komersial_komersial,komersial_komersial,model_komersial_komersial,,1,1,1,1
+access_komersial_line,komersial_line,model_komersial_line,,1,1,1,1
+access_komersial_product_type,komersial_product_type,model_komersial_product_type,,1,1,1,1
+access_workorders_workorders,workorders_workorders,model_workorders_workorders,,1,1,1,1
+access_workorders_line,workorders_line,model_workorders_line,,1,1,1,1
+access_unit_unit,unit_unit,model_unit_unit,,1,1,1,1
+access_customer_komersial,customer_komersial,model_customer_komersial,,1,1,1,1
+access_group_alat,group_alat,model_group_alat,,1,1,1,1
+access_cust_price,cust_price,model_cust_price,,1,1,1,1
