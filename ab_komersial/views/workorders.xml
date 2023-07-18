@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+
+        <!-- TREE Lokasi / Customer -->
+        <record id="customer_komersial_tree" model="ir.ui.view">
+            <field name="name">customer_komersial.tree</field>
+            <field name="model">customer.komersial</field>
+            <field name="arch" type="xml">
+                <tree string="Lokasi / Customer">
+                    <field name="name" string="Lokasi / Customer"/>
+                    <field name="parent_id"/>
+                    <field name="type_lokasi"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="customer_komersial_form" model="ir.ui.view">
+            <field name="name">customer_komersial.form</field>
+            <field name="model">customer.komersial</field>
+            <field name="arch" type="xml">
+                <form string="Lokasi / Customer">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                            </group>
+                            <group>
+                                <field name="parent_id"/>
+                                <field name="type_lokasi"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- TREE WORKORDERS -->
+        <record id="workorders_tree" model="ir.ui.view">
+            <field name="name">workorders.tree</field>
+            <field name="model">workorders.workorders</field>
+            <field name="arch" type="xml">
+                <tree string="Work Orders">
+                    <field name="name" string="WO#"/>
+                    <field name="unit_id" />
+                    <field name="wo_oracle" string="WO# Oracle"/>
+                    <field name="cust_id"/>
+                    <field name="nama_pekerja"/>
+                    <field name="status"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="unit_form" model="ir.ui.view">
+            <field name="name">unit.form</field>
+            <field name="model">unit.unit</field>
+            <field name="arch" type="xml">
+                <form string="Work Orders">
+                    <sheet>
+                        <div class="oe_title">
+                            <span class="o_form_label" >Unit</span>
+                            <h1>
+                                <field name="name"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <!-- <field name="unit_id"/> -->
+                                <field name="cust_id"/>
+                            </group>
+                            <group>
+                                <field name="group_alat"/>
+                                <field name="asset_number" string="Asset Number"/>
+                            </group>
+                        </group>
+                    </sheet>
+
+
+                </form>
+            </field>
+        </record>
+
+        <record id="workorders_form" model="ir.ui.view">
+            <field name="name">workorders.form</field>
+            <field name="model">workorders.workorders</field>
+            <field name="arch" type="xml">
+                <form string="Work Orders">
+                	<header>
+                		<button name="btn_submit" string="Submit" class="oe_highlight" type="object"
+                            attrs="{'invisible': [('status', 'in', ('waiting','close','approved'))]}"
+                            groups="ab_komersial.staff_maintenance"/>
+                        <button name="btn_approved" string="Approved" class="oe_highlight" type="object"
+                            attrs="{'invisible': [('status', 'in', ('draft','approved','close'))]}"
+                            groups="ab_komersial.svp_maintenance"/>
+                        <button name="btn_close" string="Close" class="oe_highlight" type="object"
+                            attrs="{'invisible': [('status', 'in', ('draft','approved','waiting',))]}"/>
+                        <field name="status" widget="statusbar" statusbar_visible="draft,waiting,approved,close"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <span class="o_form_label" >WO#</span>
+                            <h1>
+                                <field name="name"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="unit_id"/>
+                                <field name="cust_id"/>
+                                <field name="nama_pekerja"/>
+                                <field name="create_date" string="Tanggal"/>
+                                <field name="create_uid" string="Pembuat" />
+                            </group>
+                            <group string="WO ORACLE">
+                                <field name="wo_oracle"/>
+                                <field name="tanggal" string="Tanggal Oracle"/>
+                            </group>
+                        </group>
+                        <group>
+                            <group>
+                                <field name="dok_basp"/>
+                                <field name="dok_bakr"/>
+                                <field name="date_selesai"/>
+                            </group>
+                            <group></group>
+                        </group>
+                        
+                        <notebook colspan="4">
+                            <page name="workorders_line" string="Materials">
+                                <group>
+                                    <field name="workorders_line_ids" string="Materials">
+                                        <tree editable="bottom" string="Item" create="1">
+                                            <field name="name"/>
+                                            <field name="uom"/>
+                                            <field name="qty"/>
+                                            <field name="tagih_ok"/>
+                                            <field name="lokal_ok"/>
+                                            <field name="harga_lokal"/>
+                                        </tree>
+                                    </field>
+                                </group>  
+                            </page>
+                        </notebook>
+                    </sheet>
+
+
+                </form>
+            </field>
+        </record>
+
+
+
+        <record id="unit_form" model="ir.ui.view">
+            <field name="name">unit.form</field>
+            <field name="model">unit.unit</field>
+            <field name="arch" type="xml">
+                <form string="Work Orders">
+                    <sheet>
+                        <div class="oe_title">
+                            <span class="o_form_label" >Unit</span>
+                            <h1>
+                                <field name="name"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <!-- <field name="unit_id"/> -->
+                                <field name="cust_id"/>
+                            </group>
+                            <group>
+                                <field name="group_alat"/>
+                                <field name="asset_number" string="Asset Number"/>
+                            </group>
+                        </group>
+                    </sheet>
+
+
+                </form>
+            </field>
+        </record>
+
+
+        <!-- ACTION CUSTOMER -->
+
+        <record id="action_workorders" model="ir.actions.act_window">
+            <field name="name">Work Orders</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">workorders.workorders</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+
+        <!-- ACT UNIT -->
+        <record id="action_unit" model="ir.actions.act_window">
+            <field name="name">Units</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">unit.unit</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <!-- ACT Lokasi / Customer -->
+        <record id="action_customer_komersial" model="ir.actions.act_window">
+            <field name="name">Lokasi / Customer</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">customer.komersial</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <!-- ACT Group Alat-->
+        <record id="action_group_alat" model="ir.actions.act_window">
+            <field name="name">Group Alat</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">group.alat</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+	    <menuitem 
+            id="menu_workorders" 
+            name="Maintenance" 
+            sequence="98" />
+
+            <menuitem 
+                id="menu_workorders_2"
+                name="Work Orders" 
+                parent="menu_workorders"
+                action="action_workorders"
+                sequence="10"/>
+
+            <menuitem 
+                id="menu_config"
+                name="Config" 
+                parent="menu_workorders"
+                sequence="20"/>
+
+                <menuitem 
+                    id="menu_unit"
+                    name="Units" 
+                    parent="menu_config"
+                    action="action_unit"
+                    sequence="20"/>
+
+                <menuitem 
+                    id="menu_products"
+                    name="Products" 
+                    parent="menu_config"
+                    action="stock.product_template_action_product"
+                    sequence="21"/>
+
+                <menuitem 
+                    id="menu_products"
+                    name="Products" 
+                    parent="menu_config"
+                    action="stock.product_template_action_product"
+                    sequence="21"/>
+
+                <menuitem 
+                    id="menu_customer_komersial"
+                    name="Lokasi / Customer" 
+                    parent="menu_config"
+                    action="action_customer_komersial"
+                    sequence="23"/>
+
+                <menuitem 
+                    id="menu_group_alat"
+                    name="Group Alat" 
+                    parent="menu_config"
+                    action="action_group_alat"
+                    sequence="24"/>
+    </data>
+</odoo>
