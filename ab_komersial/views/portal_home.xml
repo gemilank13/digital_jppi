@@ -1,0 +1,11 @@
+<odoo>
+    <template id="portal_my_home_customer" name="Customer" inherit_id="portal.portal_my_home">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+            <t t-if="komersial_count >= 0" t-call="portal.portal_docs_entry">
+                <t t-set="title">Customer</t>
+                <t t-set="url" t-value="'/my/customer'"/>
+                <t t-set="count" t-value="komersial_count"/>
+            </t>
+        </xpath>
+    </template>
+</odoo>
