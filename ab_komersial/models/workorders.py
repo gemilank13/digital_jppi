@@ -49,12 +49,14 @@ class Workorders(models.Model):
             workorders_line = self.env['workorders.line'].search([('workorders_id','=',rec.id)])
 #            workorders_line = self.env['workorders.line'].search([])
             for line in workorders_line:
-                komersial_line = self.env['komersial.line'].create({
-                    'komersial_id': komersial.id,
-                    'id': line.id,
-                    'name': line.name.id,
-                    'qty': line.qty,
-                    })
+                if line.tagihan_ok:
+                    komersial_line = self.env['komersial.line'].create({
+                        'komersial_id': komersial.id,
+                        'id': line.id,
+                        'name': line.name.id,
+                        'qty': line.qty,
+                        'harga_inv': line.name.id.standar_price,
+                        })
 
 
     @api.model
