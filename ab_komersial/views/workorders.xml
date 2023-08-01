@@ -139,7 +139,7 @@
                                             <field name="qty"/>
                                             <field name="tagih_ok"/>
                                             <field name="lokal_ok"/>
-                                            <field name="harga_lokal"/>
+                                            <field name="harga_lokal" attrs="{'invisible': [('lokal_ok','=', False)]}"/>
                                         </tree>
                                     </field>
                                 </group>  
