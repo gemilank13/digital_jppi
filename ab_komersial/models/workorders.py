@@ -97,7 +97,22 @@ class WorkordersLine(models.Model):
     uom = fields.Char(string="UoM", related='name.uom_id.name')
     qty = fields.Float(string="Qty")
     tagih_ok = fields.Boolean(string="Ditagihkan") 
-    lokal_ok = fields.Boolean(string="Lokal") 
+    lokal_ok = fields.Boolean(string="Lokal")
+
+    @api.onchange('workorders_id')
+    def get_cust(self):
+        self.cust = self.workorders_id.parent_id.name
+
+    cust = fields.Char(string="Customer", readonly=True)
+
+    @api.onchange('cust')
+    def calculate_cust_price(self):
+        for rec in self:
+            cp = self.env['cust.price'].search([('product_id','=', rec.name.id)])
+            if rec.cust == cp.name:
+                rec.cust_price = cp.price
+
+    cust_price = fields.Float(string="Cust Price")
     harga_lokal = fields.Float(string="Harga Lokal")
     workorders_id = fields.Many2one("workorders.workorders", string="Workorders Id")
 
