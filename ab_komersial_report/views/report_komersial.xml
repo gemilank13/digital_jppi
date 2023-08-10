@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_komersial">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.basic_layout">
+
+                    <div class="header">
+                        <div class="row">
+                            <div class="col-6">
+                                <!-- <img src='https://pelni.co.id/cfind/source/thumb/images/cover_w886_h498_icon%20pelni%202.png' style="width:200px;float:left;"/> -->
+                            </div>
+                            <div class="col-6">
+                                <!-- <img src='/web/binary/company_logo' style="width:200px;float:right;padding-top:20px;"/> -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="page">
+                        <p><strong>INVOICE</strong></p>
+                        
+
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>
+
