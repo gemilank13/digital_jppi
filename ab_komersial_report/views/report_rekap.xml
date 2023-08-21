@@ -75,20 +75,20 @@
 									<tr t-foreach="request.env['customer.komersial'].search([])" t-as="ck" style="text-align:center;">
 										<t t-if="cust_id == ck.parent_id.name">
 											<t t-set="no" t-value="no+1"/>
-											<td style="border:1px solid black;><span t-esc="no"/></td>
-											<td style="border:1px solid black;><span t-field="ck.name"/></td>
+											<td style="border:1px solid black;" ><span t-esc="no"/> </td>
+											<td style="border:1px solid black;"><span t-field="ck.name"/></td>
 
-											<td style="border:1px solid black;></td>
-											<td style="border:1px solid black;></td>
-											<td style="border:1px solid black;></td>
+											<td style="border:1px solid black;"></td>
+											<td style="border:1px solid black;"></td>
+											<td style="border:1px solid black;"></td>
 
-											<td style="border:1px solid black;></td>
-											<td style="border:1px solid black;></td>
-											<td style="border:1px solid black;></td>
+											<td style="border:1px solid black;"></td>
+											<td style="border:1px solid black;"></td>
+											<td style="border:1px solid black;"></td>
 
-											<td style="border:1px solid black;></td>
-											<td style="border:1px solid black;></td>
-											<td style="border:1px solid black;></td>
+											<td style="border:1px solid black;"></td>
+											<td style="border:1px solid black;"></td>
+											<td style="border:1px solid black;"></td>
 										</t>
 									</tr>
 								</table>
