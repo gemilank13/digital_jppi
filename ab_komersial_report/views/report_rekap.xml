@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+   <data>
+   		<record id="custom_paperformat_id" model="report.paperformat">
+		    <field name="name">Custom Paper Format</field>
+		    <field name="default" eval="True"/>
+		    <field name="format">custom</field>
+		    <field name="page_height">297</field>
+		    <field name="page_width">210</field>
+		    <field name="orientation">Landscape</field>
+		    <field name="margin_top">40</field>
+		    <field name="margin_bottom">28</field>
+		    <field name="margin_left">7</field>
+		    <field name="margin_right">7</field>
+		    <field name="header_line" eval="False"/>
+		    <field name="header_spacing">35</field>
+		    <field name="dpi">90</field>
+		</record>
+
+		<report id="rekap_report"
+			model="rekap.report.wizard"
+			string="Rekapitulasi Report"
+			report_type="qweb-pdf"
+			name="ab_komersial_report.rekap_report_view"
+			menu="False"
+			paperformat="ab_komersial_report.custom_paperformat_id"/>
+
+
+		<template id="rekap_report_view">
+			<t t-call="web.html_container">
+			<!-- <t t-foreach="docs" t-as="o"> -->
+				<t t-call="web.basic_layout">
+
+                  	<div class="header">
+                        <div class="row">
+                            <div class="col-6"></div>
+                            <div class="col-6">
+                                <img src='/ab_komersial/static/img/logo_pelindo.png' style="max-width: 250px;float:right;padding-top:20px;"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <t t-if="report_type == 'rekapitulasi' ">
+						<div class="page">
+							<h4 class="text-center"><strong>REKAPITULASI REALISASI PEMAKAIAN SPARE PART</strong></h4>
+							<h4 class="text-center">
+								<strong>
+									PERIOD <t t-esc="date_start"/> s.d <t t-esc="date_end"/> <t t-esc="cust_id"/>
+								</strong>
+							</h4>
+
+							<div class="row">
+								
+								<div class="col-12">
+									<table width="100%" style="font-size:10px;">
+										<tr style="background-color:yellow;font-weight:bold;text-align:center;">
+											<td rowspan="2" style="width:4%;border:1px solid black">No</td>
+											<td rowspan="2" style="width:15%;border:1px solid black">Cabang</td>
+											<td colspan="3" style="width:27%;border:1px solid black">Submit JPPI</td>
+											<td colspan="3" style="width:27%;border:1px solid black">Evaluasi</td>
+											<td colspan="3" style="width:27%;border:1px solid black">Kesepakatan</td>
+										</tr>
+										<tr style="background-color:yellow;font-weight:bold;text-align:center;">
+											<td style="border:1px solid black">KHS</td>
+											<td style="border:1px solid black">Item Baru</td>
+											<td style="border:1px solid black">Total</td>
+
+											<td style="border:1px solid black">KHS</td>
+											<td style="border:1px solid black">Item Baru</td>
+											<td style="border:1px solid black">Total</td>
+
+											<td style="border:1px solid black">KHS</td>
+											<td style="border:1px solid black">Item Baru</td>
+											<td style="border:1px solid black">Total</td>
+										</tr>
+
+										<t t-set="no" t-value="0"/>
+										<t t-set="khs" t-value="0"/>
+										<tr t-foreach="request.env['customer.komersial'].search([])" t-as="ck">
+											<t t-if="cust_id == ck.parent_id.name">
+												<t t-set="no" t-value="no+1"/>
+												<td style="border:1px solid black;text-align:center;font-weight:bold;">
+													<span t-esc="no"/>
+												</td>
+												<td style="border:1px solid black;text-align:left;font-weight:bold;padding-left:1px;">
+													<span t-field="ck.name"/>
+												</td>
+												<td style="border:1px solid black;text-align:right;padding-right:1px;">
+													<t t-foreach="docs" t-as="doc">
+														<t t-foreach="doc['komersial_line_ids']" t-as="kli">
+															<t t-if=" kli.komersial_id.cust_id.name == ck.name">
+																<t t-set="khs" t-value="khs+kli.harga_jual" />
+															</t>
+														</t>
+													</t><span t-esc="khs"/>
+												</td>
+												<td style="border:1px solid black;text-align:right;padding-right:1px;"></td>
+												<td style="border:1px solid black;text-align:right;padding-right:1px;"></td>
+
+												<td style="border:1px solid black;text-align:right;padding-right:1px;"></td>
+												<td style="border:1px solid black;text-align:right;padding-right:1px;"></td>
+												<td style="border:1px solid black;text-align:right;padding-right:1px;"></td>
+
+												<td style="border:1px solid black;text-align:right;padding-right:1px;"></td>
+												<td style="border:1px solid black;text-align:right;padding-right:1px;"></td>
+												<td style="border:1px solid black;text-align:right;padding-right:1px;"></td>
+											</t>
+										</tr>
+										<!-- <t t-set="no" t-value="0"/>
+										<t t-foreach="docs" t-as="doc">
+											<tr>
+												<td style="border:1px solid black;text-align:center;font-weight:bold;">
+													<span t-esc="no"/>
+												</td>
+												<td style="border:1px solid black;text-align:center;font-weight:bold;">
+													<span t-esc="doc['customer']"/>
+												</td>
+
+												<td style="border:1px solid black;text-align:right;padding-right:1px;">
+													<t t-foreach="doc['komersial_line_ids']" t-as="kli">
+														<span t-esc="kli.harga_jual"/>
+													</t>
+												</td>
+												<td style="border:1px solid black;text-align:right;padding-right:1px;"></td>
+												<td style="border:1px solid black;text-align:right;padding-right:1px;"></td>
+
+												<td style="border:1px solid black;text-align:right;padding-right:1px;"></td>
+												<td style="border:1px solid black;text-align:right;padding-right:1px;"></td>
+												<td style="border:1px solid black;text-align:right;padding-right:1px;"></td>
+
+												<td style="border:1px solid black;text-align:right;padding-right:1px;"></td>
+												<td style="border:1px solid black;text-align:right;padding-right:1px;"></td>
+												<td style="border:1px solid black;text-align:right;padding-right:1px;"></td>
+											</tr>
+										</t> -->
+
+										<tr>
+											<td style="padding-right:1px;text-align:right;font-weight:bold;border:1px solid black;" colspan="2">
+												Total
+											</td>
+											<td style="border:1px solid black;text-align:right;padding-right:1px;"></td>
+											<td style="border:1px solid black;text-align:right;padding-right:1px;"></td>
+											<td style="border:1px solid black;text-align:right;padding-right:1px;"></td>
+
+											<td style="border:1px solid black;text-align:right;padding-right:1px;"></td>
+											<td style="border:1px solid black;text-align:right;padding-right:1px;"></td>
+											<td style="border:1px solid black;text-align:right;padding-right:1px;"></td>
+
+											<td style="border:1px solid black;text-align:right;padding-right:1px;"></td>
+											<td style="border:1px solid black;text-align:right;"></td>
+											<td style="border:1px solid black;text-align:right;"></td>
+										</tr>
+										<tr>
+											<td style="padding-right:1px;text-align:right;font-weight:bold;border:1px solid black;" colspan="2">
+												PPN 11 &#37;
+											</td>
+											<td style="border:1px solid black;text-align:right;padding-right:1px;"></td>
+											<td style="border:1px solid black;text-align:right;padding-right:1px;"></td>
+											<td style="border:1px solid black;text-align:right;padding-right:1px;"></td>
+
+											<td style="border:1px solid black;text-align:right;padding-right:1px;"></td>
+											<td style="border:1px solid black;text-align:right;padding-right:1px;"></td>
+											<td style="border:1px solid black;text-align:right;padding-right:1px;"></td>
+
+											<td style="border:1px solid black;text-align:right;padding-right:1px;"></td>
+											<td style="border:1px solid black;text-align:right;padding-right:1px;"></td>
+											<td style="border:1px solid black;text-align:right;padding-right:1px;"></td>
+										</tr>
+										<tr>
+											<td style="text-align:right;font-weight:bold;border:1px solid black;padding-right:1px;" colspan="2">
+												Grand Total
+											</td>
+											<td style="border:1px solid black;text-align:right;padding-right:1px;"></td>
+											<td style="border:1px solid black;text-align:right;padding-right:1px;"></td>
+											<td style="border:1px solid black;text-align:right;padding-right:1px;"></td>
+
+											<td style="border:1px solid black;text-align:right;padding-right:1px;"></td>
+											<td style="border:1px solid black;text-align:right;padding-right:1px;"></td>
+											<td style="border:1px solid black;text-align:right;padding-right:1px;"></td>
+
+											<td style="border:1px solid black;text-align:right;padding-right:1px;"></td>
+											<td style="border:1px solid black;text-align:right;padding-right:1px;"></td>
+											<td style="border:1px solid black;text-align:right;padding-right:1px;"></td>
+										</tr>
+									</table>
+								</div>
+							</div>
+						</div>
+					</t>
+
+
+					<!-- REPORT SUMMARY -->
+					<!-- REPORT SUMMARY --><!-- REPORT SUMMARY -->
+					<!-- REPORT SUMMARY --><!-- REPORT SUMMARY -->
+					<!-- REPORT SUMMARY --><!-- REPORT SUMMARY -->
+
+					<t t-if="report_type == 'summary' ">
+						
+						<div class="page">
+							<t t-foreach="request.env['customer.komersial'].search([])" t-as="ck">
+								<t t-if="cust_id == ck.parent_id.name">
+									<h4 class="text-center"><strong>
+										REKAPITULASI DAFTAR SPAREPART YANG TELAH DIGUNAKAN
+									</strong></h4>
+									<h4 class="text-center">
+										<strong>
+											PERIOD <t t-esc="date_start"/> s.d <t t-esc="date_end"/> <t t-esc="cust_id"/> - <span t-field="ck.name"/>
+										</strong>
+									</h4>
+
+									<div class="row">
+										
+										<div class="col-12">
+											<table width="100%" style="font-size:8px;">
+												<tr style="background-color:darkblue;font-weight:bold;text-align:center;color:white;">
+													<td rowspan="2" style="border:1px solid black;width:3%;padding:2px;">No</td>
+													<td rowspan="2" style="border:1px solid black;width:8%;padding:2px;">Asset</td>
+													<td rowspan="2" style="border:1px solid black;width:13%;padding:2px;">Pekerjaan</td>
+													<td rowspan="2" style="border:1px solid black;width:8%;padding:2px;">Tanggal Selesai Pekerjaan</td>
+													<td colspan="4" style="border:1px solid black;width:28%;padding:2px;">Spare Part</td>
+													<td rowspan="2" style="border:1px solid black;width:8%;padding:2px;">No. Work Order</td>
+													<td colspan="2" style="border:1px solid black;background-color:yellow;color:black;;width:16%;padding:2px;">Khs</td>
+													<td colspan="2" style="border:1px solid black;background-color:orange;color:black;;width:16%;padding:2px;">Item Baru</td>
+												</tr>
+												<tr style="background-color:darkblue;font-weight:bold;text-align:center;color:white;">
+													<td style="border:1px solid black;padding:2px;">Code Item</td>
+													<td style="border:1px solid black;padding:2px;">Spesifikasi</td>
+													<td style="border:1px solid black;padding:2px;">Volume</td>
+													<td style="border:1px solid black;padding:2px;">Satuan</td>
+
+													<td style="border:1px solid black;background-color:yellow;color:black;padding:2px;">Harga Satuan</td>
+													<td style="border:1px solid black;background-color:yellow;color:black;padding:2px;">Jumlah</td>
+
+													<td style="border:1px solid black;background-color:orange;color:black;padding:2px;">Harga Satuan</td>
+													<td style="border:1px solid black;background-color:orange;color:black;padding:2px;">Jumlah</td>
+												</tr>
+
+
+												<t t-set="no" t-value="0"/>
+												<t t-set="jum_khs" t-value="0"/>
+												<t t-set="jum_itembaru" t-value="0"/>
+												<t t-foreach="docs" t-as="doc">
+													<tr t-foreach="doc['komersial_line_ids']" t-as="kli">
+														<t t-if=" kli.komersial_id.cust_id.name == ck.name">
+
+															<t t-set="no" t-value="no+1"/>
+															<t t-set="jum_khs" t-value="kli.qty*kli.harga_jual" />
+															<t t-set="jum_itembaru" t-value="kli.qty*kli.harga_inv" />
+
+															<td style="border:1px solid black;text-align:center;font-weight:bold;padding:2px;">
+																<span t-esc="no"/>
+															</td>
+															<td style="border:1px solid black;text-align:center;font-weight:bold;padding:2px;">
+																<span t-field="kli.komersial_id.unit"/>
+															</td>
+															<td style="border:1px solid black;text-align:center;font-weight:bold;padding:2px;">
+																<span t-field="kli.komersial_id.pekerjaan"/>
+															</td>
+															<td style="border:1px solid black;text-align:center;font-weight:bold;padding:2px;">
+																<span t-field="kli.komersial_id.name.date_selesai"/>
+															</td>
+
+
+															<td style="border:1px solid black;text-align:center;font-weight:bold;padding:2px;">
+																<span t-field="kli.name.default_code"/>
+															</td>
+															<td style="border:1px solid black;padding-left:1px;font-weight:bold;padding:2px;">
+																<span t-field="kli.name.name"/>
+															</td>
+															<td style="border:1px solid black;text-align:center;font-weight:bold;padding:2px;">
+																<span t-esc="'%.0f'%(kli.qty)"/>
+															</td>
+															<td style="border:1px solid black;text-align:center;font-weight:bold;padding:2px;">
+																<span t-field="kli.uom"/>
+															</td>
+
+															<td style="border:1px solid black;text-align:center;font-weight:bold;padding:2px;">
+																<span t-field="kli.komersial_id.name.name"/>
+															</td>
+
+															<td style="border:1px solid black;text-align:right;padding:2px;font-weight:bold;">
+																<span t-esc="kli.harga_jual" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+															</td>
+															<td style="border:1px solid black;text-align:right;padding-right:1px;font-weight:bold;padding:2px;">
+																<span t-esc="jum_khs" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+															</td>
+
+															<td style="border:1px solid black;text-align:right;padding-right:1px;font-weight:bold;padding:2px;">
+																<span t-esc="kli.harga_inv" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+															</td>
+															<td style="border:1px solid black;text-align:right;padding-right:1px;font-weight:bold;padding:2px;">
+																<span t-esc="jum_itembaru" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+															</td>
+
+
+
+														</t>
+
+													</tr>
+												</t>	
+											</table>
+										</div>
+									</div>
+									<br/>
+									<div style="page-break-after:always;"/>
+								</t>
+							</t>
+						</div>
+							
+					</t>
+               	</t>
+            <!-- </t> -->
+          	</t>
+		</template>
+   	</data>
+</odoo>
+
